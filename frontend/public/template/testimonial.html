@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonial Certificate - JUST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .certificate-container {
+            width: 100%;
+            max-width: 1150px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate {
+            border: 20px solid;
+            border-image: repeating-linear-gradient(
+                45deg,
+                #000 0,
+                #000 1px,
+                #333 1px,
+                #333 2px,
+                #666 2px,
+                #666 3px,
+                #999 3px,
+                #999 4px
+            ) 20;
+            padding: 25px 35px;
+            background: white;
+            position: relative;
+            min-height: 750px;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid #000;
+            pointer-events: none;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            width: 110%;
+            height: 110%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header {
+            text-align: center;
+            position: relative;
+            padding: 15px 0 25px;
+            z-index: 1;
+        }
+
+        .logo {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            width: 130px;
+            height: 130px;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .serial-no {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 14px;
+            color: #000;
+            font-weight: normal;
+        }
+
+        .department {
+            font-size: 28px;
+            font-weight: normal;
+            margin-top: 15px;
+            color: #000;
+            letter-spacing: 0;
+        }
+
+        .university {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 10px 0 15px;
+            color: #000;
+            letter-spacing: 0;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-decoration: underline;
+            color: #000;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            text-align: justify;
+            line-height: 2;
+            font-size: 16px;
+            color: #000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content p {
+            margin-bottom: 0;
+        }
+
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 240px;
+        }
+
+        .underline.filled {
+            border-bottom: none;
+            min-width: auto;
+            font-weight: bold;
+            font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .underline.filled.student-name {
+            font-size: 30px;
+        }
+
+        .underline.small {
+            min-width: 100px;
+        }
+
+        .underline.small.filled {
+            min-width: auto;
+        }
+
+        .underline.medium {
+            min-width: 140px;
+        }
+
+        .underline.medium.filled {
+            min-width: auto;
+        }
+
+        .italic-text {
+            font-style: italic;
+            color: #000;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 0 30px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .footer-left {
+            text-align: left;
+            flex: 1;
+        }
+
+        .footer-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .signature {
+            width: 200px;
+            height: 60px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+
+        .signature img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .qr-code {
+            position: absolute;
+            left: 50%;
+            bottom: 15px;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border: 1px solid #000;
+            padding: 2px;
+            background: white;
+            z-index: 1;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .certificate-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Mock JSON data for the testimonial certificate
+        const certificateData = {
+            serialNo: "CSE/2024/001",
+            studentName: "Md. Abdul Rahman",
+            fatherName: "Md. Karim Rahman",
+            motherName: "Fatema Begum",
+            rollNo: "180101",
+            registrationNo: "2018-19-10100101",
+            session: "2018-2019",
+            pronoun: "He",
+            degreeYear: "4",
+            degreeMonths: "0",
+            degreeType: "Bachelor(Engg.)",
+            graduationYear: "2023",
+            cgpa: "3.75",
+            preparedBy: "Dr. Md. Ashraful Islam",
+            checkedBy: "Prof. Dr. Ahmed Hassan",
+            date: "21-12-2025",
+            signatureImage: "../signature/kamrul_signature.png",
+            qrData: "https://just.edu.bd/verify/CSE-2024-001"
+        };
+
+        // Function to populate the certificate
+        function populateCertificate() {
+            const underlines = document.querySelectorAll('.underline');
+            
+            // Serial No
+            const serialNoElement = document.querySelector('.serial-no .underline');
+            serialNoElement.textContent = certificateData.serialNo;
+            serialNoElement.classList.add('filled');
+            
+            // Get all content underlines
+            const contentUnderlines = document.querySelectorAll('.content .underline');
+            const contentData = [
+                certificateData.studentName,
+                certificateData.fatherName,
+                certificateData.motherName,
+                certificateData.rollNo,
+                certificateData.registrationNo,
+                certificateData.session,
+                certificateData.pronoun,
+                certificateData.degreeYear,
+                certificateData.degreeMonths,
+                certificateData.degreeType,
+                certificateData.graduationYear,
+                certificateData.cgpa
+            ];
+            
+            contentUnderlines.forEach((element, index) => {
+                element.textContent = contentData[index];
+                element.classList.add('filled');
+                // Add special class for student name (first element) and CGPA (last element)
+                // if (index === 0 || index === 11) {
+                if (index === 0) {
+                    element.classList.add('student-name');
+                }
+            });
+            
+            // Footer underlines
+            const footerUnderlines = document.querySelectorAll('.footer .underline');
+            const footerData = [
+                certificateData.preparedBy,
+                certificateData.checkedBy,
+                certificateData.date
+            ];
+            
+            footerUnderlines.forEach((element, index) => {
+                element.textContent = footerData[index];
+                element.classList.add('filled');
+            });
+            
+            // Update QR code
+            const qrImg = document.querySelector('.qr-code img');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(certificateData.qrData)}`;
+            
+            // Update signature
+            const signatureImg = document.querySelector('.signature img');
+            signatureImg.src = certificateData.signatureImage;
+        }
+
+        // Populate certificate when page loads
+        window.addEventListener('DOMContentLoaded', populateCertificate);
+    </script>
+
+    <div class="certificate-container">
+        <div class="certificate">
+            <!-- Watermark Background -->
+            <div class="watermark">
+                <img src="../logo/JUST_Logo.svg" alt="JUST Watermark">
+            </div>
+            
+            <!-- Header Section -->
+            <div class="header">
+                <div class="logo">
+                    <img src="../logo/JUST_Logo.svg" alt="JUST Logo">
+                </div>
+                
+                <div class="serial-no">Serial No: <span class="underline medium"></span></div>
+                
+                <div class="department">Department of Computer Science and Engineering</div>
+                <div class="university">Jashore University of Science and Technology, Bangladesh</div>
+                <div class="title">TESTIMONIAL</div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="content">
+                <p>
+                    This is to certify that, <span class="underline"></span> son of <span class="underline"></span> and 
+                    <span class="underline"></span> bearing <strong>Roll No.</strong> <span class="underline small"></span>, 
+                    <strong>Registration No.</strong> <span class="underline medium"></span>, <strong>Session:</strong> <span class="underline medium"></span> 
+                    has been a student in the department of Computer Science and Engineering at Jashore 
+                    University of Science and Technology. <span class="underline small"></span> has fulfilled the prescribed requirement 
+                    of the <span class="underline small"></span> year and <span class="underline small"></span> Months Degree of <span class="underline medium"></span> 
+                    of Science in Computer Science and Engineering in the year <span class="underline small"></span>, 
+                    <strong>CGPA:</strong> <span class="underline small"></span> <span class="italic-text">on the scale of 4.00.</span>
+                </p>
+                <p style="margin-top: 20px;">
+                    While in this University, I found him to be diligent, sincere, and punctual. He is good in his 
+                    character and has not acted against the state. I wish all the best in his future endeavors.
+                </p>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="footer">
+                <div class="footer-row">
+                    <div class="footer-left">
+                        <div>Prepared by <span class="underline medium"></span></div>
+                        <div style="margin-top: 15px;">Checked by <span class="underline medium"></span></div>
+                        <div style="margin-top: 15px;">Date: <span class="underline medium"></span></div>
+                    </div>
+                    <div class="footer-center">
+                        <div class="signature">
+                            <img src="" alt="Chairman Signature">
+                        </div>
+                        <div style="font-weight: bold;">Chairman</div>
+                        <div style="margin-top: 10px;">Department of Computer Science and Engineering</div>
+                        <div style="margin-top: 10px;">Jashore University of Science and Technology, Jashore.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=JUST-CSE-Testimonial" alt="QR Code">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
