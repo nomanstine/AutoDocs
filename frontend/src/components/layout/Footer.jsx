@@ -5,14 +5,16 @@ const Footer = () => {
     <footer className="w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl border-t border-yellow-400/30 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Department Info */}
-        <div className="flex flex-col justify-center">
-          {/* <img src="/src/assets/JUST_Logo.svg.jpg" alt="JUST Logo" className="h-14 w-14 object-center rounded-full mb-3 shadow-lg" /> */}
-          <h2 className="text-xl font-extrabold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-1">
-            Department of Computer Science & Engineering
-          </h2>
-          <p className="text-base text-slate-300">
-            Jashore University of Science and Technology
-          </p>
+        <div className="flex items-center">
+          <img src="/logo/cse_logo.svg" alt="JUST Logo" className="size-16 object-center rounded-full mb-3 shadow-lg" />
+          <div className="flex flex-col justify-center">
+            <h2 className="text-xl font-extrabold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-1">
+              Department of Computer Science & Engineering
+            </h2>
+            <p className="text-base text-slate-300">
+              Jashore University of Science and Technology
+            </p>
+          </div>
         </div>
 
         {/* Contact */}

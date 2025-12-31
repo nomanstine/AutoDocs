@@ -62,7 +62,7 @@ const Navbar = () => {
               aria-label="Auto Docs Home"
             >
               <img
-                src="logo/JUST_Logo.svg"
+                src="logo/just_logo.svg"
                 alt="Logo"
                 className="h-11 w-11 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-yellow-400 shadow-md group-hover:scale-105 transition-transform duration-200"
               />
