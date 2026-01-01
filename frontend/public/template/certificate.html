@@ -227,41 +227,37 @@
 
         /* Footer signature section */
         .footer {
-            padding: 40px 40px 20px;
+            margin-top: 50px;
+            padding: 0 30px 40px;
+            position: relative;
+            z-index: 1;
         }
 
-        .signature-section {
+        .footer-row {
             display: flex;
-            flex-direction: column;
+            justify-content: flex-start;
             align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #000;
         }
 
-        .signature-image {
-            width: 150px;
+        .footer-center {
+            text-align: center;
+            /* flex: 1; */
+        }
+
+        .signature {
+            width: 200px;
             height: 60px;
-            margin-bottom: 10px;
-            border-bottom: 1px dotted #333;
-        }
-
-        .signature-image.has-image {
-            border-bottom: none;
-        }
-
-        .signature-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: none;
-        }
-
-        .signature-image.has-image img {
+            margin: 0 auto 10px;
             display: block;
         }
 
-        .signature-line {
-            margin-bottom: 2px;
-            font-size: 13px;
-            line-height: 1.6;
+        .signature img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         /* Bottom contact bar */
@@ -340,7 +336,7 @@
             session: "2018-2019",
             department: "Computer Science and Engineering",
             works: "MS Office, Web Browsing and Computer Troubleshooting",
-            signatureImage: "signature_kamrul.png",
+            signatureImage: "../signature/kamrul_signature.png",
             courses: [
                 {
                     code: "CSE 101",
@@ -393,9 +389,8 @@
             
             // Populate signature
             if (certificateData.signatureImage) {
-                const signatureImg = document.querySelector('.signature-image img');
+                const signatureImg = document.querySelector('.signature img');
                 signatureImg.src = certificateData.signatureImage;
-                document.querySelector('.signature-image').classList.add('has-image');
             }
         }
 
@@ -482,16 +477,17 @@
                 </div>
             </div>
 
-            <!-- Footer Signature -->
+            <!-- Footer Signature (Testimonial Style) -->
             <div class="footer">
-                <div class="signature-section">
-                    <div class="signature-image">
-                        <img src="" alt="Signature">
+                <div class="footer-row">
+                    <div class="footer-center">
+                        <div class="signature">
+                            <img src="" alt="Chairman Signature">
+                        </div>
+                        <div style="font-weight: bold;">Chairman</div>
+                        <div style="margin-top: 10px;">Department of Computer Science and Engineering</div>
+                        <div style="margin-top: 10px;">Jashore University of Science and Technology, Jashore.</div>
                     </div>
-                    <div class="signature-line"><strong>Chairman</strong></div>
-                    <div class="signature-line">Department of Computer Science & Engineering</div>
-                    <div class="signature-line">Jashore University of Science and Technology</div>
-                    <div class="signature-line">Jashore-7408</div>
                 </div>
             </div>
 
