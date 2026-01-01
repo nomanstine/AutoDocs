@@ -16,6 +16,9 @@ import Login from "./pages/Login";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import ProfileUpdate from "./pages/ProfileUpdate";
+import AdminDashboard from "./pages/AdminDashboard";
+import VerifyCertificate from "./pages/VerifyCertificate";
+import AboutFounders from "./pages/Team";
 
 const App = () => {
   return (
@@ -29,12 +32,15 @@ const App = () => {
           <Route path="services" element={<Services />} />
           <Route path="contact" element={<Contact />} />
           <Route path="about" element={<AboutUs />} />
+          <Route path="credits" element={<AboutFounders />} />
+          <Route path="verify" element={<VerifyCertificate />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="payment/:serviceId" element={<Payment />} />
             <Route path="certificate/:serviceId" element={<Certificate />} />
             <Route path="profile" element={<Profile />} />
             <Route path="profile/update" element={<ProfileUpdate />} />
+            <Route path="admin" element={<AdminDashboard />} />
           </Route>
           
         </Route>

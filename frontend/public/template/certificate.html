@@ -337,6 +337,7 @@
             department: "Computer Science and Engineering",
             works: "MS Office, Web Browsing and Computer Troubleshooting",
             signatureImage: "../signature/kamrul_signature.png",
+            qrData: "/verify?ref=CSE-2025-001",
             courses: [
                 {
                     code: "CSE 101",
@@ -392,6 +393,10 @@
                 const signatureImg = document.querySelector('.signature img');
                 signatureImg.src = certificateData.signatureImage;
             }
+
+            // Update QR code
+            const qrImg = document.querySelector('.qr-code img');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.origin + certificateData.qrData)}`;
         }
 
         // Populate certificate when page loads

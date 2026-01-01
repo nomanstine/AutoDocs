@@ -73,13 +73,6 @@ const Footer = () => {
         >
           <u>Credits</u>
         </a>
-        <span className="hidden md:inline-block">|</span>
-        <a
-          href="/founders"
-          className="hover:text-yellow-300 transition font-medium"
-        >
-          <u>Founders</u>
-        </a>
       </div>
     </footer>
   );

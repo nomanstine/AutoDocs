@@ -281,7 +281,7 @@
             checkedBy: "Prof. Dr. Ahmed Hassan",
             date: "21-12-2025",
             signatureImage: "../signature/kamrul_signature.png",
-            qrData: "https://just.edu.bd/verify/CSE-2024-001"
+            qrData: "/verify?ref=CSE-2024-001"
         };
 
         // Function to populate the certificate
@@ -335,7 +335,7 @@
             
             // Update QR code
             const qrImg = document.querySelector('.qr-code img');
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(certificateData.qrData)}`;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.origin + certificateData.qrData)}`;
             
             // Update signature
             const signatureImg = document.querySelector('.signature img');

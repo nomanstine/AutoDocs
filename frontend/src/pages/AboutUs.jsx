@@ -544,7 +544,6 @@ const TabContent = ({ activeTab }) => {
   const tabComponents = {
     mission: MissionContent,
     vision: VisionContent,
-    team: TeamContent,
   };
   
   const SelectedTabComponent = tabComponents[activeTab];
@@ -552,11 +551,10 @@ const TabContent = ({ activeTab }) => {
 };
 
 export default function About() {
-  const [activeTab, setActiveTab] = useState('team'); // Start with team tab to show the rotation feature
+  const [activeTab, setActiveTab] = useState('mission'); // Start with mission tab
   
   const tabs = [
     {id: 'mission', label: 'Our Mission', icon: <Book size={18} />},
-    {id: 'team', label: 'Our Team', icon: <Users size={18} />},
     {id: 'vision', label: 'Our Vision', icon: <Award size={18} />},
   ];
 

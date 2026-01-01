@@ -1,71 +1,31 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Services = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
   const transcriptServices = [
     {
       id: 1,
-      title: "Semester Transcript",
-      description: "Official transcript with grades for a specific semester",
-      amount: 200,
-      deliveryTime: "2-3",
-      icon: "📄"
-    },
-    {
-      id: 67,
       title: "Testimonial",
       description: "Official Testimonial of the Undergraduation course",
       amount: 200,
       deliveryTime: "2-3",
-      icon: "📄"
+      icon: "📄",
+      link: "/template/testimonial.html"
     },
     {
       id: 2,
-      title: "Provisional Certificate",
-      description: "Temporary certificate before receiving the original",
+      title: "Certificate",
+      description: "Official certificate confirming course completion and capabilities",
       amount: 500,
       deliveryTime: "3-5",
-      icon: "🎓"
-    },
-    {
-      id: 3,
-      title: "Complete Transcript",
-      description: "Full academic record with all semester results",
-      amount: 1000,
-      deliveryTime: "5-7",
-      icon: "📑"
-    },
-    {
-      id: 4,
-      title: "Character Certificate",
-      description: "Official document certifying student conduct",
-      amount: 300,
-      deliveryTime: "0",
-      icon: "📝"
-    },
-    {
-      id: 5,
-      title: "Migration Certificate",
-      description: "Required for pursuing education in other institutions",
-      amount: 800,
-      deliveryTime: "7-10",
-      icon: "🔄"
-    },
-    {
-      id: 6,
-      title: "Marksheet Copy",
-      description: "Certified duplicate of original marksheet",
-      amount: 250,
-      deliveryTime: "1-2",
-      icon: "📊"
+      icon: "🎓",
+      link: "/template/certificate.html"
     }
   ];
 
-  const handleProceedToPayment = (serviceId) => {
-      navigate(`/payment/${serviceId}`);
+  const handleViewDocument = (service) => {
+    window.open(service.link, '_blank');
   };
 
   const filteredServices = transcriptServices.filter(service =>
@@ -167,16 +127,16 @@ const Services = () => {
                     </div>
                   </div>
                 </div>
-                {/* Updated payment container style */}
                 <div className="bg-white border-t border-gray-100 rounded-b-2xl shadow-md p-4 flex items-center justify-center">
                   <button
-                    onClick={() => handleProceedToPayment(service.id)}
+                    onClick={() => handleViewDocument(service)}
                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors duration-200 flex items-center justify-center text-base"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-                    Proceed to Payment
+                    View Document
                   </button>
                 </div>
               </div>
