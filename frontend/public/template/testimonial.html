@@ -22,14 +22,14 @@
         }
 
         .certificate-container {
-            width: 100%;
-            max-width: 1150px;
             background: white;
-            padding: 20px;
+            padding: 0;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
         .certificate {
+            width: 297mm;
+            height: 210mm;
             border: 20px solid;
             border-image: repeating-linear-gradient(
                 45deg,
@@ -45,8 +45,10 @@
             padding: 25px 35px;
             background: white;
             position: relative;
-            min-height: 750px;
+            overflow: hidden;
+            margin: 40px;
         }
+
 
         .certificate::before {
             content: '';
@@ -247,17 +249,10 @@
             object-fit: contain;
         }
 
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .certificate-container {
-                box-shadow: none;
-                max-width: 100%;
-            }
+        @page {
+            size: A4 landscape;
         }
+
     </style>
 </head>
 <body>
@@ -522,11 +517,6 @@
                     qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cse.just.edu.bd/certificate/verify/${data.reference_number}`;
                 }
             }
-
-            // Auto-print after data is loaded
-            setTimeout(() => {
-                window.print();
-            }, 1000);
         }
     </script>
 </body>

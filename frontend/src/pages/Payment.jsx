@@ -31,7 +31,7 @@ const BANKS = [
 const Payment = () => {
   const { serviceId } = useParams();
   const navigate = useNavigate();
-  const [selectedMethod, setSelectedMethod] = useState("card");
+  const [selectedMethod, setSelectedMethod] = useState("mobile");
   const [selectedMobileBanking, setSelectedMobileBanking] = useState(null);
   const [selectedBank, setSelectedBank] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -160,17 +160,6 @@ const Payment = () => {
               {/* Payment Method Tabs */}
               <div className="flex gap-2 mb-6 border-b border-gray-200">
                 <button
-                  onClick={() => setSelectedMethod("card")}
-                  className={`flex items-center gap-2 px-4 py-3 font-medium transition-all ${
-                    selectedMethod === "card"
-                      ? "border-b-2 border-indigo-600 text-indigo-600"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  <CreditCard className="h-5 w-5" />
-                  Card
-                </button>
-                <button
                   onClick={() => setSelectedMethod("mobile")}
                   className={`flex items-center gap-2 px-4 py-3 font-medium transition-all ${
                     selectedMethod === "mobile"
@@ -180,6 +169,17 @@ const Payment = () => {
                 >
                   <Smartphone className="h-5 w-5" />
                   Mobile Banking
+                </button>
+                <button
+                  onClick={() => setSelectedMethod("card")}
+                  className={`flex items-center gap-2 px-4 py-3 font-medium transition-all ${
+                    selectedMethod === "card"
+                      ? "border-b-2 border-indigo-600 text-indigo-600"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <CreditCard className="h-5 w-5" />
+                  Card
                 </button>
                 <button
                   onClick={() => setSelectedMethod("bank")}
