@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Certificate with Parameters</title>
+</head>
+<body>
+    <h1>Certificate Data Test</h1>
+    <p>Open the certificate template with these test URLs:</p>
+    
+    <h2>Certificate Template:</h2>
+    <a href="certificate.html?date=23/01/2026&refNo=CSE-202601-9251&studentName=John%20Doe&studentId=STU001&regNo=REG001&session=2020-2021&department=Computer%20Science" target="_blank">
+        Click here to test certificate.html with sample data
+    </a>
+    
+    <h2>Testimonial Template:</h2>
+    <a href="testimonial.html?serialNo=CSE-202601-9251&studentName=John%20Doe&fatherName=John%20Sr.&motherName=Jane%20Doe&rollNo=STU001&registrationNo=REG001&session=2020-2021&gender=Male&cgpa=3.8&degree=BSc%20in%20CS&graduationYear=2024&totalYears=4&totalMonths=0&date=23/01/2026" target="_blank">
+        Click here to test testimonial.html with sample data
+    </a>
+    
+    <hr>
+    <h2>Current URL Parameters:</h2>
+    <div id="params"></div>
+    
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const paramsDiv = document.getElementById('params');
+        if (params.toString()) {
+            paramsDiv.innerHTML = '<pre>' + JSON.stringify(Object.fromEntries(params), null, 2) + '</pre>';
+        } else {
+            paramsDiv.innerHTML = '<p>No parameters in current URL</p>';
+        }
+    </script>
+</body>
+</html>

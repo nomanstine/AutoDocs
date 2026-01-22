@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
+import { toast } from 'sonner';
 
 const Services = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const transcriptServices = [
     {
@@ -11,7 +16,7 @@ const Services = () => {
       amount: 200,
       deliveryTime: "2-3",
       icon: "📄",
-      link: "/template/testimonial.html"
+      serviceId: "67"
     },
     {
       id: 2,
@@ -20,12 +25,18 @@ const Services = () => {
       amount: 500,
       deliveryTime: "3-5",
       icon: "🎓",
-      link: "/template/certificate.html"
+      serviceId: "2"
     }
   ];
 
   const handleViewDocument = (service) => {
-    window.open(service.link, '_blank');
+    if (!isAuthenticated) {
+      toast.error('Please login to view documents');
+      navigate('/login', { state: { from: `/payment/${service.serviceId}` } });
+      return;
+    }
+    toast.info('Redirecting to payment gateway...');
+    navigate(`/payment/${service.serviceId}`);
   };
 
   const filteredServices = transcriptServices.filter(service =>

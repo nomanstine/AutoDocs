@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreditCard, Building2, Smartphone, ArrowLeft, ShieldCheck, QrCode } from "lucide-react";
+import { toast } from "sonner";
+import { certificateService } from "../api/services";
 
 const SERVICES = {
   "1": { name: "Semester Transcript", price: 200 },
@@ -82,18 +84,42 @@ const Payment = () => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Show processing toast
+    const loadingToast = toast.loading('Processing payment...');
 
-    setIsProcessing(false);
-    navigate(`/certificate/${serviceId}`, { 
-      state: { 
-        paymentSuccess: true,
-        service: service,
-        amount: service.price,
-        paymentMethod: selectedMethod
-      } 
-    });
+    try {
+      // Prepare payment data
+      const paymentData = {
+        service_id: serviceId,
+        card_number: cardData.cardNumber.replace(/\s/g, ''),
+        card_name: cardData.cardName,
+        expiry_date: cardData.expiryDate,
+        cvv: cardData.cvv,
+        email: contactData.email,
+        phone: contactData.phone,
+      };
+
+      // Call backend API to process payment
+      const paymentResponse = await certificateService.processPayment(paymentData);
+
+      setIsProcessing(false);
+
+      // Dismiss loading toast and show success
+      toast.dismiss(loadingToast);
+      toast.success('Payment successful! Generating certificate...');
+
+      // Directly open the certificate PDF template
+      const templatePath = serviceId === "67" ? "/template/testimonial.html" : "/template/certificate.html";
+      const templateUrl = `${templatePath}?serviceId=${serviceId}&transactionId=${paymentResponse.transaction_id}`;
+      window.open(templateUrl, '_blank');
+
+      // Navigate back to services page
+      navigate("/services");
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error(error.message || 'Payment failed. Please try again.');
+      setIsProcessing(false);
+    }
   };
 
   if (!service) return null;

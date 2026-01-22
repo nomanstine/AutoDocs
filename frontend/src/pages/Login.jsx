@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
+import { authService, userService } from "../api/services";
+import { toast } from "sonner";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
   const handleChange = (e) => {
@@ -28,23 +31,36 @@ const Login = () => {
     setError("");
     setIsLoading(true);
 
+    const loadingToast = toast.loading('Signing in...');
+
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Call the login endpoint
+      const { access_token, refresh_token } = await authService.login(
+        formData.email,
+        formData.password
+      );
 
-      // Mock successful login
-      const mockUser = {
-        id: 1,
-        full_name: "John Doe",
-        email: formData.email,
-        student_id: "CSE-2021-001",
-      };
-      const mockToken = "mock_jwt_token_12345";
+      // Store tokens
+      localStorage.setItem("auth_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
 
-      login(mockUser, mockToken);
-      navigate("/");
+      // Get user data
+      const userData = await userService.getProfile();
+
+      // Login with user data
+      login(userData, access_token);
+      
+      toast.dismiss(loadingToast);
+      toast.success('Login successful!');
+      
+      // Navigate to home or redirect to previous page
+      const from = location.state?.from || "/";
+      navigate(from);
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      console.error("Login error:", err);
+      toast.dismiss(loadingToast);
+      toast.error(err.message || "Invalid email or password");
+      setError(err.message || "Invalid email or password. Please try again.");
     } finally {
       setIsLoading(false);
     }

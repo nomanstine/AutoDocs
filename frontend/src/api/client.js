@@ -35,13 +35,41 @@ apiClient.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    // Handle 401 Unauthorized - Token expired or invalid
-    if (error.response?.status === 401) {
-      localStorage.removeItem(STORAGE_KEYS.TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.USER);
-      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      window.location.href = "/login";
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Handle 401 Unauthorized - Try to refresh token
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+      if (refreshToken) {
+        try {
+          const response = await axios.post(`${apiClient.defaults.baseURL}/token/refresh/`, {
+            refresh: refreshToken,
+          });
+
+          const { access } = response.data;
+          localStorage.setItem(STORAGE_KEYS.TOKEN, access);
+
+          // Retry the original request with new token
+          originalRequest.headers.Authorization = `Bearer ${access}`;
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          // Refresh failed, logout
+          localStorage.removeItem(STORAGE_KEYS.TOKEN);
+          localStorage.removeItem(STORAGE_KEYS.USER);
+          localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+          window.location.href = "/login";
+          return Promise.reject(refreshError);
+        }
+      } else {
+        // No refresh token, logout
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER);
+        localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+        window.location.href = "/login";
+      }
     }
 
     // Handle network errors

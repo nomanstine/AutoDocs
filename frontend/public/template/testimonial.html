@@ -262,31 +262,34 @@
 </head>
 <body>
     <script>
-        // Mock JSON data for the testimonial certificate
-        const certificateData = {
-            serialNo: "CSE/2024/001",
-            studentName: "Md. Abdul Rahman",
-            fatherName: "Md. Karim Rahman",
-            motherName: "Fatema Begum",
-            rollNo: "180101",
-            registrationNo: "2018-19-10100101",
-            session: "2018-2019",
-            pronoun: "He",
-            degreeYear: "4",
-            degreeMonths: "0",
-            degreeType: "Bachelor(Engg.)",
-            graduationYear: "2023",
-            cgpa: "3.75",
-            preparedBy: "Dr. Md. Ashraful Islam",
-            checkedBy: "Prof. Dr. Ahmed Hassan",
-            date: "21-12-2025",
-            signatureImage: "../signature/kamrul_signature.png",
-            qrData: "/verify?ref=CSE-2024-001"
-        };
+        // Function to get URL parameters
+        function getUrlParameters() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                serialNo: params.get('serialNo') || params.get('refNo') || 'N/A',
+                studentName: params.get('studentName') || 'N/A',
+                fatherName: params.get('fatherName') || 'N/A',
+                motherName: params.get('motherName') || 'N/A',
+                rollNo: params.get('rollNo') || params.get('studentId') || 'N/A',
+                registrationNo: params.get('registrationNo') || params.get('regNo') || 'N/A',
+                session: params.get('session') || 'N/A',
+                pronoun: params.get('pronoun') || params.get('gender') === 'Female' ? 'She' : 'He',
+                degreeYear: params.get('degreeYear') || params.get('totalYears') || '4',
+                degreeMonths: params.get('degreeMonths') || params.get('totalMonths') || '0',
+                degreeType: params.get('degreeType') || params.get('degree') || 'Bachelor(Engg.)',
+                graduationYear: params.get('graduationYear') || new Date().getFullYear().toString(),
+                cgpa: params.get('cgpa') || 'N/A',
+                preparedBy: params.get('preparedBy') || 'Office Staff',
+                checkedBy: params.get('checkedBy') || 'Academic Coordinator',
+                date: params.get('date') || new Date().toLocaleDateString('en-GB'),
+                signatureImage: params.get('signatureImage') || '../signature/kamrul_signature.png',
+                qrData: params.get('qrData') || `/verify?ref=${params.get('serialNo') || params.get('refNo') || 'N/A'}`
+            };
+        }
 
         // Function to populate the certificate
         function populateCertificate() {
-            const underlines = document.querySelectorAll('.underline');
+            const certificateData = getUrlParameters();
             
             // Serial No
             const serialNoElement = document.querySelector('.serial-no .underline');
@@ -313,8 +316,7 @@
             contentUnderlines.forEach((element, index) => {
                 element.textContent = contentData[index];
                 element.classList.add('filled');
-                // Add special class for student name (first element) and CGPA (last element)
-                // if (index === 0 || index === 11) {
+                // Add special class for student name (first element)
                 if (index === 0) {
                     element.classList.add('student-name');
                 }
@@ -409,5 +411,123 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceId = urlParams.get('serviceId');
+        const transactionId = urlParams.get('transactionId');
+
+        if (serviceId && transactionId) {
+            // Fetch certificate data from backend
+            fetch(`http://localhost:8000/api/certificates/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                },
+                body: JSON.stringify({
+                    service_id: serviceId,
+                    transaction_id: transactionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.detail) {
+                    alert('Error: ' + data.detail);
+                    return;
+                }
+
+                // Populate testimonial data
+                populateTestimonial(data);
+            })
+            .catch(error => {
+                console.error('Error fetching testimonial:', error);
+                alert('Error loading testimonial. Please try again.');
+            });
+        } else {
+            alert('Invalid testimonial parameters');
+        }
+
+        function populateTestimonial(data) {
+            // Populate student name
+            const studentNameElements = document.querySelectorAll('.content p:first-child .underline');
+            if (studentNameElements[0]) {
+                studentNameElements[0].textContent = data.student_name || 'N/A';
+            }
+
+            // Populate father name
+            if (studentNameElements[1]) {
+                studentNameElements[1].textContent = data.father_name || 'N/A';
+            }
+
+            // Populate mother name
+            if (studentNameElements[2]) {
+                studentNameElements[2].textContent = data.mother_name || 'N/A';
+            }
+
+            // Populate roll number (student_id)
+            const rollNoElement = document.querySelector('.content p:first-child .underline.small');
+            if (rollNoElement) {
+                rollNoElement.textContent = data.student_id || 'N/A';
+            }
+
+            // Populate registration number
+            const regElements = document.querySelectorAll('.content p:first-child .underline.medium');
+            if (regElements[0]) {
+                regElements[0].textContent = data.registration_number || 'N/A';
+            }
+
+            // Populate session
+            if (regElements[1]) {
+                regElements[1].textContent = data.session || 'N/A';
+            }
+
+            // Populate total years
+            const yearElements = document.querySelectorAll('.content p:first-child .underline.small');
+            if (yearElements[1]) {
+                yearElements[1].textContent = data.total_years || '4';
+            }
+
+            // Populate total months
+            if (yearElements[2]) {
+                yearElements[2].textContent = data.total_months || '0';
+            }
+
+            // Populate degree
+            if (regElements[2]) {
+                regElements[2].textContent = data.degree || 'Bachelor';
+            }
+
+            // Populate graduation year
+            if (yearElements[3]) {
+                yearElements[3].textContent = data.graduation_year || new Date().getFullYear();
+            }
+
+            // Populate CGPA
+            if (yearElements[4]) {
+                yearElements[4].textContent = data.cgpa || 'N/A';
+            }
+
+            // Populate serial number (reference number)
+            const serialElement = document.querySelector('.serial-no .underline.medium');
+            if (serialElement) {
+                serialElement.textContent = data.reference_number || 'N/A';
+            }
+
+            // Update QR code with verification URL
+            if (data.reference_number) {
+                const qrCode = document.querySelector('.qr-code img');
+                if (qrCode) {
+                    qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cse.just.edu.bd/certificate/verify/${data.reference_number}`;
+                }
+            }
+
+            // Auto-print after data is loaded
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

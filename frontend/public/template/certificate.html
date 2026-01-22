@@ -326,37 +326,28 @@
 </head>
 <body>
     <script>
-        // Mock JSON data for the certificate
-        const certificateData = {
-            date: "21-12-2025",
-            refNo: "CSE/JUST/2025/001",
-            studentName: "Md. Abdul Rahman",
-            studentId: "180101",
-            regNo: "2018-19-10100101",
-            session: "2018-2019",
-            department: "Computer Science and Engineering",
-            works: "MS Office, Web Browsing and Computer Troubleshooting",
-            signatureImage: "../signature/kamrul_signature.png",
-            qrData: "/verify?ref=CSE-2025-001",
-            courses: [
-                {
-                    code: "CSE 101",
-                    title: "Introduction to Computer Science",
-                    credit: "3.00",
-                    type: "Theory"
-                },
-                {
-                    code: "CSE 102",
-                    title: "Computer Programming Lab",
-                    credit: "1.50",
-                    type: "Lab"
-                },
-                
-            ]
-        };
+        // Function to get URL parameters
+        function getUrlParameters() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                date: params.get('date') || new Date().toLocaleDateString('en-GB'),
+                refNo: params.get('refNo') || 'N/A',
+                studentName: params.get('studentName') || 'N/A',
+                studentId: params.get('studentId') || 'N/A',
+                regNo: params.get('regNo') || 'N/A',
+                session: params.get('session') || 'N/A',
+                department: params.get('department') || 'Computer Science and Engineering',
+                works: params.get('works') || 'Software Development and System Administration',
+                signatureImage: params.get('signatureImage') || '../signature/kamrul_signature.png',
+                qrData: params.get('qrData') || `/verify?ref=${params.get('refNo') || 'N/A'}`,
+                courses: params.get('courses') ? JSON.parse(decodeURIComponent(params.get('courses'))) : []
+            };
+        }
 
         // Function to populate the certificate
         function populateCertificate() {
+            const certificateData = getUrlParameters();
+            
             // Populate date and ref no
             document.querySelector('.date-line').textContent = certificateData.date;
             document.querySelector('.ref-line').textContent = certificateData.refNo;
@@ -378,15 +369,28 @@
             // Populate course table
             const tbody = document.querySelector('.course-table tbody');
             tbody.innerHTML = '';
-            certificateData.courses.forEach(course => {
-                const row = tbody.insertRow();
-                row.innerHTML = `
-                    <td>${course.code}</td>
-                    <td>${course.title}</td>
-                    <td>${course.credit}</td>
-                    <td>${course.type}</td>
-                `;
-            });
+            if (certificateData.courses.length > 0) {
+                certificateData.courses.forEach(course => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${course.code}</td>
+                        <td>${course.title}</td>
+                        <td>${course.credit}</td>
+                        <td>${course.type}</td>
+                    `;
+                });
+            } else {
+                // Default empty rows if no courses provided
+                for (let i = 0; i < 2; i++) {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    `;
+                }
+            }
             
             // Populate signature
             if (certificateData.signatureImage) {
@@ -513,5 +517,104 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceId = urlParams.get('serviceId');
+        const transactionId = urlParams.get('transactionId');
+
+        if (serviceId && transactionId) {
+            // Fetch certificate data from backend
+            fetch(`http://localhost:8000/api/certificates/generate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+                },
+                body: JSON.stringify({
+                    service_id: serviceId,
+                    transaction_id: transactionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.detail) {
+                    alert('Error: ' + data.detail);
+                    return;
+                }
+
+                // Populate certificate data
+                populateCertificate(data);
+            })
+            .catch(error => {
+                console.error('Error fetching certificate:', error);
+                alert('Error loading certificate. Please try again.');
+            });
+        } else {
+            alert('Invalid certificate parameters');
+        }
+
+        function populateCertificate(data) {
+            // Populate student information
+            document.querySelectorAll('.student-name').forEach(el => {
+                el.textContent = data.student_name || 'N/A';
+            });
+
+            document.querySelectorAll('.student-id').forEach(el => {
+                el.textContent = data.student_id || 'N/A';
+            });
+
+            document.querySelectorAll('.registration-number').forEach(el => {
+                el.textContent = data.registration_number || 'N/A';
+            });
+
+            document.querySelectorAll('.session').forEach(el => {
+                el.textContent = data.session || 'N/A';
+            });
+
+            document.querySelectorAll('.department').forEach(el => {
+                el.textContent = data.department || 'Computer Science and Engineering';
+            });
+
+            // Populate issue date
+            const issueDate = data.issue_date ? new Date(data.issue_date).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB');
+            document.querySelectorAll('.issue-date').forEach(el => {
+                el.textContent = issueDate;
+            });
+
+            // Populate reference number
+            document.querySelectorAll('.reference-number').forEach(el => {
+                el.textContent = data.reference_number || 'N/A';
+            });
+
+            // Populate CGPA if available
+            if (data.cgpa) {
+                document.querySelectorAll('.cgpa').forEach(el => {
+                    el.textContent = data.cgpa;
+                });
+            }
+
+            // Populate graduation year if available
+            if (data.graduation_year) {
+                document.querySelectorAll('.graduation-year').forEach(el => {
+                    el.textContent = data.graduation_year;
+                });
+            }
+
+            // Update QR code with verification URL
+            if (data.reference_number) {
+                const qrCode = document.querySelector('.qr-code img');
+                if (qrCode) {
+                    qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cse.just.edu.bd/certificate/verify/${data.reference_number}`;
+                }
+            }
+
+            // Auto-print after data is loaded
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

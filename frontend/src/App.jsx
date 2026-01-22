@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { Toaster } from "sonner";
 
 import Layout from "./Layout";
 import { AuthProvider } from "./AuthContext";
@@ -23,6 +24,7 @@ import AboutFounders from "./pages/Team";
 const App = () => {
   return (
     <AuthProvider>
+      <Toaster position="top-right" richColors closeButton />
       <Router>
         <Routes>
 
