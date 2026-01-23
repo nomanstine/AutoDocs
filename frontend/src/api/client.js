@@ -7,9 +7,11 @@ export const STORAGE_KEYS = Object.freeze({
   REFRESH_TOKEN: "refresh_token",
 });
 
+export const BaseUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+
 // Create axios instance with default config
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
+  baseURL: BaseUrl,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

@@ -404,7 +404,7 @@
 
             // Update QR code
             const qrImg = document.querySelector('.qr-code img');
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.origin + certificateData.qrData)}`;
+            qrImg.src = `http://localhost:8000/api/certificates/qr?data=${encodeURIComponent(window.location.origin + certificateData.qrData)}`;
         }
 
         // Populate certificate when page loads
@@ -516,7 +516,7 @@
                 </div>
                 <!-- QR Code -->
                 <div class="qr-code">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cse.just.edu.bd/certificate/verify" alt="QR Code">
+                    <img src="http://localhost:8000/api/certificates/qr?data=http://localhost:5173/verify" alt="QR Code">
                 </div>
             </div>
         </div>
@@ -610,7 +610,7 @@
             if (data.reference_number) {
                 const qrCode = document.querySelector('.qr-code img');
                 if (qrCode) {
-                    qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cse.just.edu.bd/certificate/verify/${data.reference_number}`;
+                    qrCode.src = `http://localhost:8000/api/certificates/qr?data=http://localhost:5173/verify?ref=${data.reference_number}`;
                 }
             }
 
