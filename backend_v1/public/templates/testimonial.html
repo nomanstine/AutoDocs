@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonial</title>
+    <title>Testimonial Certificate - JUST</title>
     <style>
-        @page {
-            size: A4 landscape;
-            margin: 0;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -17,237 +12,310 @@
         }
 
         body {
-            font-family: 'Times New Roman', serif;
+            font-family: 'Times New Roman', Times, serif;
+            background: white;
+            padding: 0;
+            margin: 0;
+            display: block;
+        }
+
+        .certificate-container {
             width: 297mm;
             height: 210mm;
-            padding: 15mm;
-            position: relative;
+            padding: 5mm;
+            background: white;
+            margin: 0 auto;
         }
 
         .certificate {
+            width: 100%;
+            height: 100%;
+            padding: 22px 30px;
+            position: relative;
+            overflow: hidden;
             border: 16px solid #333;
             box-shadow: inset 0 0 0 2px #000;
-            padding: 20px;
+        }
+
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 2px solid #000;
+            pointer-events: none;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            width: 80%;
+            height: 80%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .watermark img {
+            width: 100%;
             height: 100%;
-            position: relative;
+            object-fit: contain;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 15px;
+            position: relative;
+            padding: 15px 0 25px;
+            z-index: 1;
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 8px;
-        }
-
-        .university-name {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        .department-name {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            text-decoration: underline;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .serial-date {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-
-        .content {
-            font-size: 15px;
-            line-height: 1.6;
-            text-align: justify;
-            margin-bottom: 15px;
-        }
-
-        .content p {
-            margin-bottom: 10px;
-        }
-
-        .student-name {
-            font-weight: bold;
-            font-size: 17px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-
-        .info-item {
-            display: flex;
-        }
-
-        .info-label {
-            font-weight: bold;
-            width: 140px;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 20px;
-        }
-
-        .qr-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qr-code {
+            position: absolute;
+            left: 20px;
+            top: 0;
             width: 80px;
             height: 80px;
         }
 
-        .signatures {
-            display: flex;
-            gap: 60px;
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
-        .signature-block {
-            text-align: center;
+        .serial-no {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 14px;
+            color: #000;
+            font-weight: normal;
         }
 
-        .signature-image {
-            width: 120px;
-            height: 50px;
-            margin-bottom: 5px;
+        .department {
+            font-size: 28px;
+            font-weight: normal;
+            margin-top: 15px;
+            color: #000;
+            letter-spacing: 0;
         }
 
-        .signature-line {
-            border-top: 1px solid #000;
-            width: 150px;
-            padding-top: 5px;
-            font-size: 13px;
-        }
-
-        .signature-title {
+        .university {
+            font-size: 26px;
             font-weight: bold;
+            margin: 10px 0 15px;
+            color: #000;
+            letter-spacing: 0;
         }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-decoration: underline;
+            color: #000;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            text-align: justify;
+            line-height: 2;
+            font-size: 16px;
+            color: #000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content p {
+            margin-bottom: 0;
+        }
+
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 240px;
+        }
+
+        .underline.filled {
+            border-bottom: none;
+            min-width: auto;
+            font-weight: bold;
+            font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .underline.filled.student-name {
+            font-size: 30px;
+        }
+
+        .underline.small {
+            min-width: 100px;
+        }
+
+        .underline.small.filled {
+            min-width: auto;
+        }
+
+        .underline.medium {
+            min-width: 140px;
+        }
+
+        .underline.medium.filled {
+            min-width: auto;
+        }
+
+        .italic-text {
+            font-style: italic;
+            color: #000;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 0 30px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .footer-left {
+            text-align: left;
+            flex: 1;
+        }
+
+        .footer-center {
+            text-align: center;
+            flex: 1;
+        }
+
+        .signature {
+            width: 200px;
+            height: 60px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+
+        .signature img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .qr-code {
+            position: absolute;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border: 1px solid #000;
+            padding: 2px;
+            background: white;
+            z-index: 1;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        @media print {
+            html, body {
+                width: 297mm;
+                height: 210mm;
+                margin: 0;
+                padding: 0;
+                background: white;
+                overflow: hidden;
+            }
+        }
+
     </style>
 </head>
 <body>
-    <div class="certificate">
-        <div class="header">
-            <img src="{{ logo_path }}" alt="University Logo" class="logo">
-            <div class="university-name">Jashore University of Science and Technology</div>
-            <div class="department-name">Office of the Controller of Examinations</div>
-            <div class="title">TESTIMONIAL</div>
-        </div>
-
-        <div class="serial-date">
-            <div>Serial No: {{ serial_no }}</div>
-            <div>Date: {{ date }}</div>
-        </div>
-
-        <div class="content">
-            <p>This is to certify that <span class="student-name">{{ student_name }}</span>, 
-            Son/Daughter of <strong>{{ father_name }}</strong> and <strong>{{ mother_name }}</strong>, 
-            Roll No: <strong>{{ roll_no }}</strong>, Registration No: <strong>{{ reg_no }}</strong>, 
-            Session: <strong>{{ session }}</strong>, was a bonafide student of this University.</p>
-
-            <p>{{ pronoun }} successfully completed {{ degree_years }} years 
-            {% if degree_months > 0 %}and {{ degree_months }} months{% endif %} 
-            {{ degree_type }} degree program and graduated in the year <strong>{{ graduation_year }}</strong> 
-            with a CGPA of <strong>{{ cgpa }}</strong>.</p>
-
-            <p>During {{ pronoun|lower }} stay at this institution, {{ pronoun|lower }} maintained good conduct and character. 
-            {{ pronoun }} was found to be sincere, hardworking, and dedicated to academic pursuits.</p>
-
-            <p>We wish {{ student_name }} all success in {{ pronoun|lower }} future endeavors.</p>
-        </div>
-
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-label">Student Name:</div>
-                <div>{{ student_name }}</div>
+    <div class="certificate-container">
+        <div class="certificate">
+            <!-- Watermark Background -->
+            <div class="watermark">
+                <img src="{{ logo_path }}" alt="JUST Watermark">
             </div>
-            <div class="info-item">
-                <div class="info-label">Father's Name:</div>
-                <div>{{ father_name }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Mother's Name:</div>
-                <div>{{ mother_name }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Roll No:</div>
-                <div>{{ roll_no }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Registration No:</div>
-                <div>{{ reg_no }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Session:</div>
-                <div>{{ session }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Degree Type:</div>
-                <div>{{ degree_type }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Graduation Year:</div>
-                <div>{{ graduation_year }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">CGPA:</div>
-                <div>{{ cgpa }}</div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <div class="qr-section">
-                <img src="{{ qr_code }}" alt="QR Code" class="qr-code">
-                <div style="font-size: 11px;">
-                    <div>Scan to verify</div>
-                    <div>this testimonial</div>
+            
+            <!-- Header Section -->
+            <div class="header">
+                <div class="logo">
+                    <img src="{{ logo_path }}" alt="JUST Logo">
                 </div>
+                
+                <div class="serial-no">Serial No: <span class="underline medium filled">{{ serial_no }}</span></div>
+                
+                <div class="department">Department of Computer Science and Engineering</div>
+                <div class="university">Jashore University of Science and Technology, Bangladesh</div>
+                <div class="title">TESTIMONIAL</div>
             </div>
 
-            <div class="signatures">
-                <div class="signature-block">
-                    <img src="{{ signature_path }}" alt="Signature" class="signature-image">
-                    <div class="signature-line">
-                        <div class="signature-title">{{ prepared_by }}</div>
-                        <div>Prepared By</div>
+            <!-- Content Section -->
+            <div class="content">
+                <p>
+                    This is to certify that, <span class="underline filled student-name">{{ student_name }}</span> son of <span class="underline filled">{{ father_name }}</span> and 
+                    <span class="underline filled">{{ mother_name }}</span> bearing <strong>Roll No.</strong> <span class="underline small filled">{{ roll_no }}</span>, 
+                    <strong>Registration No.</strong> <span class="underline medium filled">{{ reg_no }}</span>, <strong>Session:</strong> <span class="underline medium filled">{{ session }}</span> 
+                    has been a student in the department of Computer Science and Engineering at Jashore 
+                    University of Science and Technology. <span class="underline small filled">{{ pronoun }}</span> has fulfilled the prescribed requirement 
+                    of the <span class="underline small filled">{{ degree_years }}</span> year and <span class="underline small filled">{{ degree_months }}</span> Months Degree of <span class="underline medium filled">{{ degree_type }}</span> 
+                    of Science in Computer Science and Engineering in the year <span class="underline small filled">{{ graduation_year }}</span>, 
+                    <strong>CGPA:</strong> <span class="underline small filled">{{ cgpa }}</span> <span class="italic-text">on the scale of 4.00.</span>
+                </p>
+                <p style="margin-top: 20px;">
+                    While in this University, I found him to be diligent, sincere, and punctual. He is good in his 
+                    character and has not acted against the state. I wish all the best in his future endeavors.
+                </p>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="footer">
+                <div class="footer-row">
+                    <div class="footer-left">
+                        <div>Prepared by <span class="underline medium filled">{{ prepared_by }}</span></div>
+                        <div style="margin-top: 15px;">Checked by <span class="underline medium filled">{{ checked_by }}</span></div>
+                        <div style="margin-top: 15px;">Date: <span class="underline medium filled">{{ date }}</span></div>
+                    </div>
+                    <div class="footer-center">
+                        <div class="signature">
+                            <img src="{{ signature_path }}" alt="Chairman Signature">
+                        </div>
+                        <div style="font-weight: bold;">Chairman</div>
+                        <div style="margin-top: 10px;">Department of Computer Science and Engineering</div>
+                        <div style="margin-top: 10px;">Jashore University of Science and Technology, Jashore.</div>
                     </div>
                 </div>
-                <div class="signature-block">
-                    <img src="{{ signature_path }}" alt="Signature" class="signature-image">
-                    <div class="signature-line">
-                        <div class="signature-title">{{ checked_by }}</div>
-                        <div>Checked By</div>
-                    </div>
-                </div>
-                <div class="signature-block">
-                    <img src="{{ signature_path }}" alt="Signature" class="signature-image">
-                    <div class="signature-line">
-                        <div class="signature-title">Controller of Examinations</div>
-                        <div>JUST, Jashore</div>
-                    </div>
-                </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="qr-code">
+                <img src="{{ qr_code }}" alt="QR Code">
             </div>
         </div>
     </div>

@@ -16,6 +16,9 @@ def get_session():
 
 def seed_data():
     """Seed initial data for testing"""
+    from passlib.context import CryptContext
+    pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+    
     with Session(engine) as session:
         # Check if data already exists
         existing_user = session.exec(select(User)).first()
@@ -27,7 +30,7 @@ def seed_data():
         user = User(
             name="John Doe",
             email="john.doe@example.com",
-            password="hashed_password_here"
+            password=pwd_context.hash("password123")
         )
         session.add(user)
         session.commit()

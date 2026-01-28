@@ -1,8 +1,9 @@
 from db import get_session
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import SQLModel, Session, select
-from models import Transaction
+from models import Transaction, User
 from datetime import datetime
+from auth import get_current_active_user
 
 router = APIRouter()
 
@@ -20,7 +21,8 @@ class PaymentVerifyRequest(SQLModel):
 @router.post("/payment", status_code=status.HTTP_201_CREATED)
 async def create_payment(
     payment: PaymentRequest,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_active_user)
 ):
     """
     Create a new payment transaction
@@ -51,7 +53,8 @@ async def create_payment(
 @router.post("/verify-payment")
 async def verify_payment(
     verify_request: PaymentVerifyRequest,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_active_user)
 ):
     # Find the transaction
     statement = select(Transaction).where(Transaction.transaction_id == verify_request.transaction_id)

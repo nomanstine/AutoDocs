@@ -10,6 +10,7 @@ from io import BytesIO
 import base64
 from weasyprint import HTML
 from pathlib import Path
+from auth import get_current_active_user
 
 router = APIRouter()
 templates = Jinja2Templates(directory="public/templates")
@@ -55,7 +56,8 @@ class VerifyRefRequest(SQLModel):
 async def generate_certificate(
     request: Request,
     cert_data: CertificateRequest,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_active_user)
 ):
     """
     Generate certificate PDF with provided data and return it
@@ -136,7 +138,8 @@ async def generate_certificate(
 async def generate_testimonial(
     request: Request,
     test_data: TestimonialRequest,
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_active_user)
 ):
     """
     Generate testimonial PDF with provided data and return it
