@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+        }
+
+        .university-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .department-name {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .certificate-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 20px;
+        }
+
+        .ref-date {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .student-info {
+            margin: 20px 0;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            width: 150px;
+            font-weight: bold;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .courses-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .courses-table th,
+        .courses-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .courses-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+
+        .qr-code {
+            width: 100px;
+            height: 100px;
+        }
+
+        .signature-block {
+            text-align: center;
+        }
+
+        .signature-image {
+            width: 150px;
+            height: 60px;
+            margin-bottom: 5px;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            width: 200px;
+            margin: 0 auto;
+            padding-top: 5px;
+        }
+
+        .signature-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ logo_path }}" alt="University Logo" class="logo">
+        <div class="university-name">Jashore University of Science and Technology</div>
+        <div class="department-name">Department of {{ department }}</div>
+        <div class="certificate-title">CERTIFICATE</div>
+    </div>
+
+    <div class="ref-date">
+        <div>Ref No: {{ ref_no }}</div>
+        <div>Date: {{ date }}</div>
+    </div>
+
+    <div class="content">
+        <p>This is to certify that <strong>{{ student_name }}</strong>, 
+        Student ID: <strong>{{ student_id }}</strong>, Registration No: <strong>{{ reg_no }}</strong>, 
+        Session: <strong>{{ session }}</strong>, has successfully completed the work related to 
+        <strong>{{ works }}</strong> in the Department of {{ department }}.</p>
+    </div>
+
+    <div class="student-info">
+        <div class="info-row">
+            <div class="info-label">Student Name:</div>
+            <div class="info-value">{{ student_name }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Student ID:</div>
+            <div class="info-value">{{ student_id }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Registration No:</div>
+            <div class="info-value">{{ reg_no }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Session:</div>
+            <div class="info-value">{{ session }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Department:</div>
+            <div class="info-value">{{ department }}</div>
+        </div>
+    </div>
+
+    {% if courses %}
+    <table class="courses-table">
+        <thead>
+            <tr>
+                <th>SL</th>
+                <th>Course Name</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div class="content">
+        <p>We wish {{ student_name }} every success in their future endeavors.</p>
+    </div>
+
+    <div class="signature-section">
+        <div>
+            <img src="{{ qr_code }}" alt="QR Code" class="qr-code">
+        </div>
+        <div class="signature-block">
+            <img src="{{ signature_path }}" alt="Signature" class="signature-image">
+            <div class="signature-line">
+                <div class="signature-title">Head of Department</div>
+                <div>Department of {{ department }}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
